@@ -1,0 +1,33 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system must be configured to audit Account Management - Security Group Management successes.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000175
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Set the Group Policy to disable the Application Compatibility Program Inventory
+$GroupPolicyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat"
+if (!(Test-Path $GroupPolicyPath)) { New-Item -Path $GroupPolicyPath -Force }
+Set-ItemProperty -Path $GroupPolicyPath -Name "DisableInventory" -Value 1
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
