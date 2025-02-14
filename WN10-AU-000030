@@ -1,1 +1,43 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system must be configured to audit Account Management - Security Group Management successes.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000030
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Ensure running with administrative privileges
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Error "You need to run this script as an Administrator."
+    exit
+}
+
+# Set the audit policy for Security Group Management successes
+AuditPol /set /subcategory:"Security Group Management" /success:enable
+
+# Verify the settings
+$auditSettings = AuditPol /get /subcategory:"Security Group Management"
+if ($auditSettings -match "Security Group Management\s+Success") {
+    Write-Host "Audit policy for Security Group Management successes is correctly applied."
+} else {
+    Write-Warning "Failed to apply audit policy for Security Group Management successes."
+}
 
