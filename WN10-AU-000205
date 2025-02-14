@@ -1,0 +1,53 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system is configured to audit System - System Integrity failures.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000205
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+#>
+
+# Ensure running with administrative privileges
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Error "You need to run this script as an Administrator."
+    exit
+}
+
+# Set the registry value to disable Full Telemetry
+$registryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+$propertyName = "AllowTelemetry"
+$propertyType = [Microsoft.Win32.RegistryValueKind]::DWord
+$propertyValue = 0  # 0 = Security, 1 = Basic
+
+if (-not (Test-Path $registryPath)) {
+    New-Item -Path $registryPath -Force
+}
+
+Set-ItemProperty -Path $registryPath -Name $propertyName -Value $propertyValue -Type $propertyType
+
+# Verify the settings
+$currentValue = Get-ItemProperty -Path $registryPath -Name $propertyName
+if ($currentValue.AllowTelemetry -eq 0) {
+    Write-Host "Windows Telemetry is correctly set to Security."
+} else {
+    Write-Warning "Failed to set Windows Telemetry to Security."
+}
+
