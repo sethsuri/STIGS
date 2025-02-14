@@ -1,0 +1,48 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system is configured to audit Account Management - User Account Management failures.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-SO-000010
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Ensure the script runs with administrative privileges
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Please run this script as Administrator."
+    exit
+}
+
+# Disable the built-in Guest account
+Write-Host "Disabling the built-in Guest account..."
+wmic useraccount where name='Guest' set Disabled=True
+
+# Verify the change
+Write-Host "Verifying Guest account status..."
+$guestStatus = Get-WmiObject -Class Win32_UserAccount | Where-Object { $_.Name -eq "Guest" }
+
+if ($guestStatus.Disabled) {
+    Write-Host "Guest account is successfully disabled."
+} else {
+    Write-Host "Failed to disable the Guest account."
+}
+
+Write-Host "Audit policy has been successfully configured!"
+
