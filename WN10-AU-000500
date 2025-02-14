@@ -1,0 +1,48 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Application event log size is configured to 32768 KB or greater.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000500
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Ensure running with administrative privileges
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Error "You need to run this script as an Administrator."
+    exit
+}
+
+# Create the registry key if it doesn't exist
+if (-not (Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application" -Force
+}
+
+# Set the Application event log size to 32768 KB or greater
+$applicationLogSize = 32768
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application" -Name "MaxSize" -Value $applicationLogSize
+
+# Verify the settings
+$applicationLogSize = Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application" -Name "MaxSize"
+if ($applicationLogSize.MaxSize -ge 32768) {
+    Write-Host "The Application event log size is correctly set to 32768 KB or greater."
+} else {
+    Write-Warning "Failed to set the Application event log size to 32768 KB or greater."
+}
