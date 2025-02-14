@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    This PowerShell script ensures that the system is configured to audit Account Management - User Account Management failures.
+    This PowerShell script ensures that the built-in guest account is disabled.
 
 .NOTES
     Author          : Seth Suri
