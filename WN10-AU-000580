@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    This PowerShell script ensures that the Windows 10 is configured to prioritize ECC Curves with longer key lengths first.
+    This PowerShell script ensures that the Group Policy is set to enable auditing for MPSSVC Rule-Level Policy Change Failures.
 
 FAILED
 .NOTES
