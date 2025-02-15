@@ -1,0 +1,42 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Deny access to this computer from the network user right on workstations must be configured to prevent access from highly privileged domain accounts and local accounts on domain systems and unauthenticated access on all systems.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-UR-000070
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Define the groups and accounts to deny network access
+$DenyNetworkAccessGroups = @("Enterprise Admins", "Domain Admins", "Guests")
+$DenyNetworkAccessPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkAccessProtection\DenyNetworkAccess"
+
+# Ensure the registry path exists
+if (!(Test-Path $DenyNetworkAccessPath)) {
+    New-Item -Path $DenyNetworkAccessPath -Force
+}
+
+# Add the groups and accounts to the DenyNetworkAccess list
+foreach ($group in $DenyNetworkAccessGroups) {
+    New-ItemProperty -Path $DenyNetworkAccessPath -Name $group -PropertyType DWord -Value 1
+}
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
