@@ -1,0 +1,32 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the password history must be configured to 24 passwords remembered.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AC-000020
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Set the password history policy to remember 24 passwords
+$PasswordHistoryPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PasswordPolicy"
+if (!(Test-Path $PasswordHistoryPath)) {
+    New-Item -Path $PasswordHistoryPath -Force
+}
+Set-ItemProperty -Path $PasswordHistoryPath -Name "EnforcePasswordHistory" -Value 24
