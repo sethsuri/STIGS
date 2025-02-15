@@ -1,0 +1,31 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Windows 10 must be configured to audit Object Access - File Share successes.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000082
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Enable auditing for Object Access - File Share successes
+auditpol /set /subcategory:"File Share" /success:enable
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
