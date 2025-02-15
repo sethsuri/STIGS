@@ -1,0 +1,37 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Users must be prevented from changing installation options.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-14-2025
+    Last Modified   : 02-14-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000310
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Ensure the registry path exists
+$InstallerPolicyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer"
+if (!(Test-Path $InstallerPolicyPath)) {
+    New-Item -Path $InstallerPolicyPath -Force
+}
+
+# Set the policy to disable user control over installations
+Set-ItemProperty -Path $InstallerPolicyPath -Name "EnableUserControl" -Value 0
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
