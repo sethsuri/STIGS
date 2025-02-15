@@ -1,0 +1,32 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system is configured to audit Account Logon - Credential Validation failures.
+FAILED
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000005
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Enable auditing for Account Logon - Credential Validation failures
+# Set the subcategory to audit failures
+auditpol /set /subcategory:"Credential Validation" /failure:enable
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
