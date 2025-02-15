@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    This PowerShell script ensures that the system must be configured to audit Account Management - Security Group Management successes.
+    This PowerShell script ensures that the system must be configured to set the Group Policy to disable the Application Compatibility Program Inventory.
 
 .NOTES
     Author          : Seth Suri
