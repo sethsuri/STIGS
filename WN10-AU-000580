@@ -1,0 +1,34 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Windows 10 is configured to prioritize ECC Curves with longer key lengths first.
+
+FAILED
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000580
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Set the Group Policy to enable auditing for MPSSVC Rule-Level Policy Change Failures
+$AuditPolicyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\MPSSVC"
+if (!(Test-Path $AuditPolicyPath)) { New-Item -Path $AuditPolicyPath -Force }
+New-ItemProperty -Path $AuditPolicyPath -Name "AuditMPSSVCRuleLevelPolicyChangeFailure" -PropertyType DWord -Value 1
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
