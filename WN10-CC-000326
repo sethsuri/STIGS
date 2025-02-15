@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    This PowerShell script ensures that the Windows 10 is configured to prioritize ECC Curves with longer key lengths first.
+    This PowerShell script ensures that the Windows 10 is configured to Enable PowerShell script block logging.
 
 FAILED
 .NOTES
