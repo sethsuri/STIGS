@@ -1,0 +1,31 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the Windows 10 must have command line process auditing events enabled for failures.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-AU-000585
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Enable auditing for command line process failures
+auditpol /set /subcategory:"Process Creation" /failure:enable
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
