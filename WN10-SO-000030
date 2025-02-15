@@ -1,0 +1,33 @@
+<#
+.SYNOPSIS
+    This PowerShell script ensures that the system Audit policy using subcategories is enabled.
+
+.NOTES
+    Author          : Seth Suri
+    LinkedIn        : (https://www.linkedin.com/in/seth-suri-98b461184/)
+    GitHub          : (github.com/sethsuri)
+    Date Created    : 02-15-2025
+    Last Modified   : 02-15-2025
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-SO-000030
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template(STIG-ID-WN10-AU-000500).ps1 
+
+# Set the Group Policy to enable audit policy subcategory settings
+$GroupPolicyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Lsa"
+if (!(Test-Path $GroupPolicyPath)) { New-Item -Path $GroupPolicyPath -Force }
+Set-ItemProperty -Path $GroupPolicyPath -Name "SCENoApplyLegacyAuditPolicy" -Value 1
+
+# Restart the machine to apply the Group Policy settings
+Restart-Computer
